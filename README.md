@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Resume Coach
+
+Resume Coach is an AI-powered web app that helps job seekers create stronger application materials and practice interviews in one place. It combines resume generation, resume review, interview simulation, and preparation roadmaps into a single Next.js application.
+
+## Features
+
+- **AI Resume Builder**
+  - Generates resumes from user details
+  - Supports multiple styles (Modern, Classic, Minimal, Creative)
+  - Supports multiple languages (English, Hindi, French, German, Spanish)
+  - Includes ATS-oriented checks and scoring flow
+- **Resume Parsing**
+  - Upload a resume (`.pdf`, `.txt`, basic `.docx` fallback) to prefill form fields
+- **Resume Reviewer**
+  - Upload or paste resume content for AI feedback
+  - Returns both review notes and a rewritten version
+  - Download rewritten output as PDF
+- **Cover Letter Generator**
+  - Creates a tailored cover letter from generated resume content
+- **LinkedIn Optimizer**
+  - Generates headline/about recommendations
+  - Supports optional LinkedIn URL metadata-based suggestions
+- **Mock Interview**
+  - AI interviewer with text, voice, and video interaction modes
+- **Interview Tips / Study Roadmap**
+  - Role- and company-specific preparation roadmap with topics/resources
+- **Application Tracking Dashboard**
+  - Drag-and-drop board to track resume status (draft/applied/interviewing/offer/rejected)
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router), React, TypeScript
+- **Styling:** Tailwind CSS + custom styles
+- **AI:** Groq SDK
+- **Auth/Data:** Supabase (auth + resumes table access)
+- **State:** Zustand (with persistence)
+- **Document/PDF utilities:** `jspdf`, `pdfkit`, `docx`, `pdf-parse`, `file-saver`
+
+## Prerequisites
+
+- Node.js 20+ recommended
+- npm (project includes `package-lock.json`)
+- Supabase project (for auth and saved resumes pages)
+- Groq API key
 
 ## Getting Started
 
-First, run the development server:
+### 1) Install dependencies
+
+```bash
+npm install
+```
+
+### 2) Configure environment variables
+
+Create a local env file:
+
+```bash
+cp .env.example .env.local
+```
+
+If `.env.example` does not exist yet, create `.env.local` manually with the variables below.
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `GROQ_API_KEY` | Yes | Server-side key used by AI API routes (`/api/resume`, `/api/interview`, `/api/tips`, etc.) |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL used by the frontend client |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Supabase anon public key used by the frontend client |
+| `D_ID_API_KEY` | Optional | Used by `/api/d-id` route for avatar/video generation |
+
+> Never commit real secrets. `.env*` files are gitignored in this repository.
+
+### 3) Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+From the repository root:
 
-## Learn More
+```bash
+npm run dev    # start local dev server
+npm run build  # production build
+npm run start  # run production server after build
+npm run lint   # run ESLint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Build, Lint, Test, Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Lint:** `npm run lint`
+- **Build:** `npm run build`
+- **Production start:** `npm run start`
+- **Tests:** No test script is currently defined in `package.json`.
+- **Deploy:** Standard Next.js deployment workflow (for example, build with `npm run build` and serve with `npm run start`, or deploy to a Next.js-compatible host).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```text
+.
+├── app/
+│   ├── api/                  # Route handlers (resume, ATS, reviewer, interview, tips, etc.)
+│   ├── components/           # UI components/templates
+│   ├── dashboard/            # Drag-and-drop application tracker
+│   ├── interview/            # Mock interview UI
+│   ├── interview-tips/       # AI roadmap UI
+│   ├── login/ & signup/      # Auth pages
+│   ├── my-resumes/           # Supabase-backed saved resumes view
+│   ├── resume-builder/       # Main resume generation flow
+│   ├── resume-reviewer/      # Resume review + rewrite flow
+│   └── utils/                # Document helpers (DOCX generation)
+├── lib/
+│   └── supabase.ts           # Supabase client setup
+├── package.json
+└── README.md
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Typical Usage Workflow
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Sign up / log in** with Supabase auth.
+2. Go to **Resume Builder** and either:
+   - Fill in profile details manually, or
+   - Upload a resume to auto-parse fields.
+3. Generate a resume, review ATS indicators, then download/export.
+4. Optionally generate a **cover letter** and **LinkedIn optimization** output.
+5. Use **Resume Reviewer** for AI critique + rewritten resume text.
+6. Practice in **Mock Interview** mode (text/voice/video).
+7. Build a targeted prep plan in **Interview Tips**.
+8. Track progress in **Dashboard** with drag-and-drop status updates.
+
+## Troubleshooting
+
+- **`Missing GROQ_API_KEY` / AI routes failing**
+  - Ensure `GROQ_API_KEY` is set in `.env.local` and restart dev server.
+- **Supabase auth/data errors**
+  - Verify `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` values.
+  - Confirm your Supabase project/table policies allow expected operations.
+- **File parse issues for uploaded resumes**
+  - Prefer PDF/TXT inputs when extraction quality is poor.
+- **Microphone/camera not working in interview mode**
+  - Check browser permissions and use HTTPS/localhost-compatible browser settings.
+
+## Contributing
+
+Contributions are welcome. If you plan significant changes, open an issue first to discuss approach and scope.
+
+## License
+
+No license file is currently present in this repository. Add a `LICENSE` file if you want to define usage terms explicitly.
