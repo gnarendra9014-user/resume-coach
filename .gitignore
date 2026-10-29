@@ -10,8 +10,12 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# test fixtures & artifacts
 /coverage
+tests/fixtures/oversized-resume.txt
+evaluation/results/*.json
+benchmarks/results/*.json
+
 
 # next.js
 /.next/
@@ -39,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
+.env*

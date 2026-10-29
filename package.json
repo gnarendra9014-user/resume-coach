@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "eval": "tsx evaluation/eval-runner.ts",
+    "benchmark": "tsx benchmarks/load-test.ts"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.15.0",
@@ -15,10 +19,9 @@
     "cheerio": "^1.2.0",
     "docx": "^9.6.1",
     "file-saver": "^2.0.5",
-    "groq-sdk": "^0.37.0",
     "html2pdf.js": "^0.14.0",
     "jspdf": "^4.2.0",
-    "next": "16.1.6",
+    "next": "^16.2.2",
     "pdf-parse": "^2.4.5",
     "pdfkit": "^0.17.2",
     "postcss": "^8.5.8",
@@ -34,9 +37,14 @@
     "@types/pdfkit": "^0.17.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "mammoth": "^1.13.0",
     "tailwindcss": "^4.2.1",
-    "typescript": "^5"
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   }
 }

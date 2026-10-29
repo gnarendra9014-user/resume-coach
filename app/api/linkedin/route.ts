@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import Groq from "groq-sdk";
+import { createChatCompletion } from "../../utils/omniroute";
 import * as cheerio from "cheerio";
-
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export async function POST(req: NextRequest) {
   try {
@@ -54,8 +52,8 @@ export async function POST(req: NextRequest) {
         }`
     }`;
 
-    const response = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+    const response = await createChatCompletion({
+      model: "auto",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 1000,

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Groq from "groq-sdk";
-
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+import { createChatCompletion } from "../../utils/omniroute";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,8 +15,8 @@ ${jobDescription ? `Target Job Description:\n${jobDescription}\nCRITICAL: Tailor
 
 Format the output as a clean, plain text cover letter. Do not include any meta-commentary, just the letter itself. Keep it under 400 words.`;
 
-    const response = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+    const response = await createChatCompletion({
+      model: "auto",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 1000,

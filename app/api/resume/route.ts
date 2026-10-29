@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Groq from "groq-sdk";
-
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+import { createChatCompletion } from "../../utils/omniroute";
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,8 +57,8 @@ export async function POST(req: NextRequest) {
           "skills": ["Category 1: Skill A, Skill B", "Category 2: Skill C, Skill D"]
         }`;
 
-    const response = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+    const response = await createChatCompletion({
+      model: "auto",
       messages: [{ role: "user", content: prompt }],
       max_tokens: 1500,
       response_format: { type: "json_object" },
@@ -68,7 +66,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ result: response.choices[0].message.content });
   } catch (error: any) {
-    console.error("Groq error:", error.message);
+    console.error("OmniRoute error:", error.message);
     return NextResponse.json({ result: "Error: " + error.message }, { status: 500 });
   }
 }

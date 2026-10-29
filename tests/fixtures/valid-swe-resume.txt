@@ -1,0 +1,28 @@
+Alex Morgan
+Software Engineer
+alex.morgan@example.com | (555) 019-2831 | San Francisco, CA | github.com/alexmorgan
+
+PROFESSIONAL SUMMARY
+Results-oriented Software Engineer with 4+ years of hands-on experience designing and delivering high-throughput, low-latency microservices, RESTful APIs, and responsive web platforms. Proficient in TypeScript, React, Next.js, Node.js, Python, PostgreSQL, and AWS. Demonstrated track record of optimizing application performance and boosting ATS conversion rates.
+
+WORK EXPERIENCE
+Senior Full-Stack Engineer | Apex Systems | 2022 - Present
+- Architected and deployed scalable payment ingestion service handling 45,000 transactions/second with 99.99% uptime.
+- Reduced p99 API response latencies from 420ms to 85ms by introducing Redis caching and SQL indexing.
+- Spearheaded team transition from legacy React to Next.js 14 App Router, cutting client bundle size by 38%.
+- Mentored 5 junior engineers and instituted automated end-to-end testing with 88% branch coverage.
+
+Software Engineer | CloudScale Labs | 2020 - 2022
+- Developed customer-facing analytics dashboards using React, TypeScript, TailwindCSS, and D3.js.
+- Integrated PostgreSQL database layer using Prisma ORM, improving complex query performance by 25%.
+- Implemented OAuth2 and JWT-based authentication pipelines ensuring strict SOC-2 compliance.
+
+EDUCATION
+Bachelor of Science in Computer Science | University of California, Berkeley | 2016 - 2020
+- Relevant Coursework: Data Structures, Algorithms, Distributed Systems, Database Management Systems.
+- GPA: 3.82 / 4.0
+
+TECHNICAL SKILLS
+Languages: TypeScript, JavaScript, Python, Go, SQL, HTML5, CSS3
+Frameworks & Libraries: React, Next.js, Node.js, Express, TailwindCSS, Jest, Vitest
+Databases & Tools: PostgreSQL, Redis, MongoDB, Docker, Kubernetes, AWS (S3, ECS, Lambda), Git, CI/CD

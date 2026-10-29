@@ -1,7 +1,5 @@
-import Groq from "groq-sdk";
 import { NextRequest, NextResponse } from "next/server";
-
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+import { createChatCompletion } from "../../utils/omniroute";
 
 export async function POST(req: NextRequest) {
   const { role, messages } = await req.json();
@@ -19,8 +17,8 @@ Your behavior:
 
 Start by greeting the candidate formally and asking your first question.`;
 
-  const response = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+  const response = await createChatCompletion({
+    model: "auto",
     messages: [
       { role: "system", content: systemPrompt },
       ...messages,
