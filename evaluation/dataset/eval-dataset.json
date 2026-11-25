@@ -1,0 +1,201 @@
+{
+  "version": "1.0.0",
+  "datasetName": "ResumeCoach-Production-Eval-Benchmark",
+  "lastUpdated": "2026-10-29",
+  "totalCases": 12,
+  "cases": [
+    {
+      "id": "CASE-01",
+      "name": "Junior SWE -> Senior Distributed Systems Role",
+      "experienceLevel": "Entry/Fresher (1 year)",
+      "roleType": "Technical - Software Engineering",
+      "matchTier": "Partial Match",
+      "resumeText": "David Chen\nJunior Backend Developer\ndavid.chen@example.com | (555) 234-5678 | Seattle, WA\n\nSUMMARY\nMotivated junior developer with 1 year experience writing Node.js and Express REST APIs. Familiar with PostgreSQL and Git.\n\nEXPERIENCE\nJunior Web Developer | Local Dev Agency (2023 - 2024)\n- Built basic CRUD endpoints using Node.js and Express.\n- Created PostgreSQL database tables and basic migration scripts.\n- Wrote unit tests using Jest covering 60% of routes.\n\nSKILLS\nJavaScript, Node.js, Express, PostgreSQL, Git, HTML, CSS\n\nEDUCATION\nB.S. in Information Systems, Washington State University (2023)",
+      "targetJobDescription": "Senior Distributed Systems Engineer at CloudCore Inc.\nRequirements:\n- 5+ years experience building highly available distributed systems in Go or Rust.\n- Deep expertise in Kafka, Raft consensus, and Kubernetes orchestration.\n- Proven track record scaling systems to millions of concurrent websocket connections.\n- Advanced database internals and distributed storage expertise.",
+      "groundTruth": {
+        "expectedSkills": ["JavaScript", "Node.js", "Express", "PostgreSQL", "Git", "HTML", "CSS", "Jest"],
+        "targetJdRequiredSkills": ["Go", "Rust", "Kafka", "Raft", "Kubernetes", "Distributed Systems", "WebSockets"],
+        "expectedSkillGaps": ["Go", "Rust", "Kafka", "Raft", "Kubernetes", "Distributed Systems", "WebSockets"],
+        "expectedScoreRange": [30, 50],
+        "prohibitedHallucinations": ["Kafka experience", "Go production expertise", "Kubernetes cluster administration"]
+      }
+    },
+    {
+      "id": "CASE-02",
+      "name": "Mid-Level Full-Stack Engineer -> React/Node Full-Stack Role",
+      "experienceLevel": "Mid-Level (4 years)",
+      "roleType": "Technical - Software Engineering",
+      "matchTier": "High Match",
+      "resumeText": "Samantha Ray\nFull Stack Software Engineer\nsamantha.ray@example.com | San Francisco, CA | github.com/samray\n\nSUMMARY\nFull-Stack Engineer with 4 years of experience building modern web applications using React, TypeScript, Node.js, and GraphQL. Strong background in Next.js, microservices, and CI/CD automation.\n\nEXPERIENCE\nSoftware Engineer | FinTech Innovations (2022 - Present)\n- Built mission-critical trading dashboard using React, TypeScript, Next.js, and TailwindCSS.\n- Designed GraphQL API services backed by Node.js and PostgreSQL, serving 10,000 requests/sec.\n- Implemented automated CI/CD pipelines via GitHub Actions and Docker on AWS ECS.\n\nSoftware Engineer | WebStudio (2020 - 2022)\n- Developed responsive web interfaces in React and state management with Redux Toolkit.\n- Collaborated with product designers to implement accessibility (a11y) standards.\n\nSKILLS\nReact, TypeScript, Next.js, Node.js, GraphQL, PostgreSQL, Docker, AWS, TailwindCSS, Jest\n\nEDUCATION\nB.S. Computer Science, University of California, Davis (2020)",
+      "targetJobDescription": "Senior Full Stack Engineer at NextGen SaaS\nLooking for an engineer with:\n- 3-5 years experience with React, TypeScript, and modern state management.\n- Production Node.js backend development, REST and GraphQL APIs.\n- Experience with Docker, cloud deployment (AWS/GCP), and relational databases (PostgreSQL).\n- Passion for web performance and responsive design.",
+      "groundTruth": {
+        "expectedSkills": ["React", "TypeScript", "Next.js", "Node.js", "GraphQL", "PostgreSQL", "Docker", "AWS", "TailwindCSS", "Jest"],
+        "targetJdRequiredSkills": ["React", "TypeScript", "Node.js", "GraphQL", "PostgreSQL", "Docker", "AWS"],
+        "expectedSkillGaps": [],
+        "expectedScoreRange": [85, 96],
+        "prohibitedHallucinations": ["Python Django experience", "Kubernetes certified", "Machine learning expert"]
+      }
+    },
+    {
+      "id": "CASE-03",
+      "name": "Staff Infrastructure Engineer -> Principal Cloud Architect",
+      "experienceLevel": "Senior/Staff (9 years)",
+      "roleType": "Technical - Infrastructure/Cloud",
+      "matchTier": "High Match",
+      "resumeText": "Marcus Vance\nStaff Infrastructure Architect\nmarcus.vance@example.com | Austin, TX\n\nSUMMARY\nStaff Cloud Infrastructure Engineer with 9 years architecting multi-region AWS and GCP cloud solutions. Pioneer of Terraform infrastructure-as-code and Kubernetes cluster security.\n\nEXPERIENCE\nStaff Cloud Architect | Enterprise Cloud Co (2020 - Present)\n- Architected global multi-region Kubernetes platform across AWS and GCP supporting 800+ microservices.\n- Authored company-wide Terraform and OpenTofu modules managing $12M annual cloud spend.\n- Reduced cloud infrastructure expenditure by 34% via spot instance orchestration and auto-scaling.\n\nSenior DevOps Engineer | ScaleOps (2016 - 2020)\n- Built zero-downtime CI/CD pipelines deploying 200+ releases daily.\n- Managed Prometheus, Grafana, and OpenTelemetry observability stacks.\n\nSKILLS\nKubernetes, Terraform, AWS, GCP, Docker, Golang, Python, Prometheus, Grafana, CI/CD, Helm\n\nEDUCATION\nM.S. in Computer Engineering, Georgia Tech (2015)",
+      "targetJobDescription": "Principal Cloud Infrastructure Architect\nRequirements:\n- 8+ years hands-on infrastructure engineering and cloud architecture.\n- Deep mastery of Kubernetes, Terraform, multi-cloud setups (AWS, GCP).\n- Proven ability to reduce infrastructure cost and optimize system resilience.\n- Experience driving observability and enterprise-wide SRE practices.",
+      "groundTruth": {
+        "expectedSkills": ["Kubernetes", "Terraform", "AWS", "GCP", "Docker", "Golang", "Python", "Prometheus", "Grafana", "CI/CD", "Helm"],
+        "targetJdRequiredSkills": ["Kubernetes", "Terraform", "AWS", "GCP", "Multi-cloud", "Observability", "Cost Optimization"],
+        "expectedSkillGaps": [],
+        "expectedScoreRange": [90, 100],
+        "prohibitedHallucinations": ["Azure specialist certification", "C++ kernel developer", "Ruby on Rails developer"]
+      }
+    },
+    {
+      "id": "CASE-04",
+      "name": "Entry Data Analyst -> Junior Data Analyst Role",
+      "experienceLevel": "Entry/Fresher (0-1 year)",
+      "roleType": "Technical - Data Analytics",
+      "matchTier": "High Match",
+      "resumeText": "Emily Zhao\nData Analyst\nemily.zhao@example.com | Chicago, IL\n\nSUMMARY\nRecent Data Analytics graduate skilled in SQL, Python, Excel, and Tableau. Experienced in transforming raw sales data into actionable executive dashboards.\n\nEXPERIENCE\nData Analytics Intern | Retail Dynamics (Summer 2024)\n- Cleaned and aggregated 500,000+ transaction records using SQL and pandas.\n- Designed interactive Tableau dashboard tracking regional churn and customer LTV.\n- Formatted monthly executive summaries in Advanced Excel using Pivot Tables and VLOOKUP.\n\nSKILLS\nSQL, Python, Pandas, Tableau, Excel, Data Cleaning, Data Visualization, Statistical Analysis\n\nEDUCATION\nB.S. in Statistics & Data Analytics, University of Illinois (2024) - Dean's List",
+      "targetJobDescription": "Junior Data Analyst\nRequirements:\n- Proficiency in SQL for querying relational databases.\n- Familiarity with Python (Pandas/NumPy) for exploratory data analysis.\n- Ability to create interactive reports and dashboards using Tableau or PowerBI.\n- Strong Microsoft Excel skills (VLOOKUP, Pivot Tables) and attention to detail.",
+      "groundTruth": {
+        "expectedSkills": ["SQL", "Python", "Pandas", "Tableau", "Excel", "Data Cleaning", "Data Visualization", "Statistical Analysis"],
+        "targetJdRequiredSkills": ["SQL", "Python", "Pandas", "Tableau", "Excel", "Data Analysis"],
+        "expectedSkillGaps": [],
+        "expectedScoreRange": [82, 95],
+        "prohibitedHallucinations": ["Apache Spark cluster tuning", "Snowflake administrator", "Deep Learning / PyTorch"]
+      }
+    },
+    {
+      "id": "CASE-05",
+      "name": "Mid-Level BI Analyst -> Senior Machine Learning Engineer Role",
+      "experienceLevel": "Mid-Level (3 years)",
+      "roleType": "Technical - Data vs ML",
+      "matchTier": "Partial Match",
+      "resumeText": "Robert Taylor\nBusiness Intelligence Analyst\nrobert.taylor@example.com | New York, NY\n\nSUMMARY\nBI Analyst with 3 years experience writing complex SQL queries, building PowerBI reports, and maintaining data pipelines in Snowflake.\n\nEXPERIENCE\nBI Analyst | Media Group (2022 - Present)\n- Created automated reporting pipelines in Snowflake and dbt.\n- Built 20+ enterprise PowerBI dashboards for executive stakeholders.\n- Wrote basic Python scripts to pull data from external REST APIs.\n\nSKILLS\nSQL, PowerBI, Snowflake, dbt, Excel, Python (Basic), Tableau\n\nEDUCATION\nB.A. in Economics, NYU (2021)",
+      "targetJobDescription": "Senior Machine Learning Engineer at VisionAI\nRequirements:\n- 4+ years training and deploying deep learning models in production.\n- Mastery of PyTorch, TensorFlow, CUDA, and distributed LLM fine-tuning.\n- Experience with Ray, Triton inference server, and ML lifecycle tracking (MLflow).\n- Strong mathematical grounding in optimization and neural network architectures.",
+      "groundTruth": {
+        "expectedSkills": ["SQL", "PowerBI", "Snowflake", "dbt", "Excel", "Python", "Tableau"],
+        "targetJdRequiredSkills": ["Deep Learning", "PyTorch", "TensorFlow", "CUDA", "LLM Fine-tuning", "Triton", "MLflow"],
+        "expectedSkillGaps": ["Deep Learning", "PyTorch", "TensorFlow", "CUDA", "LLM Fine-tuning", "Triton", "MLflow"],
+        "expectedScoreRange": [25, 45],
+        "prohibitedHallucinations": ["PyTorch production experience", "CUDA GPU acceleration expertise", "LLM fine-tuning experience"]
+      }
+    },
+    {
+      "id": "CASE-06",
+      "name": "Product Manager -> Senior Technical Product Manager Role",
+      "experienceLevel": "Mid/Senior (5 years)",
+      "roleType": "Non-Technical / Product",
+      "matchTier": "High Match",
+      "resumeText": "Jessica Wu\nProduct Manager\njessica.wu@example.com | Boston, MA\n\nSUMMARY\nTechnical Product Manager with 5 years leading cross-functional engineering and design teams to deliver SaaS platform features. Adept at agile sprints, product roadmaps, user stories, and conversion optimization.\n\nEXPERIENCE\nProduct Manager | HealthTech Solutions (2021 - Present)\n- Led roadmap and launch of patient portal, increasing user adoption by 65% in 6 months.\n- Defined PRDs, sprint backlogs, and user stories in Jira for 12 software engineers.\n- Conducted A/B tests with Amplitude and SQL, improving subscription conversion by 18%.\n\nAssociate PM | EduTech Inc (2019 - 2021)\n- Collaborated with UX researchers and business teams on mobile application features.\n\nSKILLS\nProduct Roadmap, Agile/Scrum, User Stories, Jira, A/B Testing, Amplitude, SQL, Stakeholder Management\n\nEDUCATION\nB.S. in Business Administration, Boston University (2019)",
+      "targetJobDescription": "Senior Technical Product Manager\nRequirements:\n- 4+ years of product management experience for SaaS software products.\n- Strong understanding of Agile methodology, PRD creation, and sprint execution in Jira.\n- Data-driven approach using product analytics (Amplitude, Mixpanel) and SQL.\n- Excellent communication and stakeholder alignment skills.",
+      "groundTruth": {
+        "expectedSkills": ["Product Roadmap", "Agile/Scrum", "User Stories", "Jira", "A/B Testing", "Amplitude", "SQL", "Stakeholder Management"],
+        "targetJdRequiredSkills": ["Product Management", "SaaS", "Agile", "PRD", "Jira", "Analytics", "SQL", "Stakeholder Management"],
+        "expectedSkillGaps": [],
+        "expectedScoreRange": [84, 96],
+        "prohibitedHallucinations": ["C++ programming", "Hands-on React code authorship", "Database DBA certification"]
+      }
+    },
+    {
+      "id": "CASE-07",
+      "name": "HR Specialist -> Software Engineer Role",
+      "experienceLevel": "Mid-Level (4 years)",
+      "roleType": "Non-Technical vs Technical",
+      "matchTier": "Low / Irrelevant Match",
+      "resumeText": "Karen Miller\nSenior HR & Talent Acquisition Specialist\nkaren.miller@example.com | Denver, CO\n\nSUMMARY\nDedicated Human Resources professional with 4 years experience in full-cycle recruitment, employee relations, payroll administration, and onboarding.\n\nEXPERIENCE\nHR Specialist | Mountain View Logistics (2021 - Present)\n- Managed end-to-end talent acquisition for 150+ operational positions.\n- Administered employee benefits, payroll via Workday, and annual performance reviews.\n- Resolved employee grievances and conducted conflict mediation sessions.\n\nSKILLS\nTalent Acquisition, Recruiting, Workday, Employee Relations, Payroll, Benefits Administration, Onboarding\n\nEDUCATION\nB.A. in Human Resource Management, Colorado State University (2020)",
+      "targetJobDescription": "Backend Software Engineer\nRequirements:\n- 3+ years writing clean backend code in Go, Java, or C++.\n- In-depth understanding of concurrency, data structures, algorithms, and microservices.\n- Experience designing relational and NoSQL databases.\n- Strong background in automated testing and CI/CD pipelines.",
+      "groundTruth": {
+        "expectedSkills": ["Talent Acquisition", "Recruiting", "Workday", "Employee Relations", "Payroll", "Benefits Administration", "Onboarding"],
+        "targetJdRequiredSkills": ["Go", "Java", "C++", "Concurrency", "Data Structures", "Microservices", "Databases", "CI/CD"],
+        "expectedSkillGaps": ["Go", "Java", "C++", "Concurrency", "Data Structures", "Microservices", "Databases", "CI/CD"],
+        "expectedScoreRange": [5, 20],
+        "prohibitedHallucinations": ["Java backend development", "Go concurrency experience", "Microservices architecture"]
+      }
+    },
+    {
+      "id": "CASE-08",
+      "name": "SWE Mid-Level -> Senior HR Director Role",
+      "experienceLevel": "Mid-Level (4 years)",
+      "roleType": "Technical vs HR",
+      "matchTier": "Low / Irrelevant Match",
+      "resumeText": "Liam Patel\nSoftware Engineer\nliam.patel@example.com | San Jose, CA\n\nSUMMARY\nSoftware Engineer experienced in React, Node.js, and MongoDB building single-page applications.\n\nEXPERIENCE\nSoftware Developer | AppLogic (2021 - Present)\n- Developed frontend components in React and state management with Redux.\n- Integrated REST endpoints with Node.js backend.\n\nSKILLS\nJavaScript, React, Node.js, MongoDB, Git\n\nEDUCATION\nB.S. in Computer Science, San Jose State (2021)",
+      "targetJobDescription": "Senior Director of People & Human Resources\nRequirements:\n- 8+ years leading human resources, talent strategy, and organizational development.\n- Deep knowledge of federal and state labor laws, EEOC compliance, and ERISA.\n- Experience executive compensation design and executive committee governance.\n- Proven track record scaling company culture across 1,000+ employees.",
+      "groundTruth": {
+        "expectedSkills": ["JavaScript", "React", "Node.js", "MongoDB", "Git"],
+        "targetJdRequiredSkills": ["Human Resources", "Talent Strategy", "Labor Laws", "EEOC Compliance", "Executive Compensation", "Organizational Development"],
+        "expectedSkillGaps": ["Human Resources", "Talent Strategy", "Labor Laws", "EEOC Compliance", "Executive Compensation", "Organizational Development"],
+        "expectedScoreRange": [5, 20],
+        "prohibitedHallucinations": ["Workday HR certification", "Labor law legal expertise", "Executive compensation design"]
+      }
+    },
+    {
+      "id": "CASE-09",
+      "name": "Graphic Designer -> Cloud DevOps Engineer",
+      "experienceLevel": "Mid-Level (3 years)",
+      "roleType": "Creative vs Cloud/DevOps",
+      "matchTier": "Low / Irrelevant Match",
+      "resumeText": "Chloe Adams\nVisual Graphic Designer\nchloe.adams@example.com | Los Angeles, CA\n\nSUMMARY\nGraphic Designer with 3 years creating brand identities, illustrations, and marketing assets using Adobe Creative Suite and Figma.\n\nEXPERIENCE\nGraphic Designer | Creative Studio (2022 - Present)\n- Designed logo packages, banners, and typography for over 40 client brand launches.\n- Created vector illustrations in Adobe Illustrator and layouts in InDesign.\n\nSKILLS\nAdobe Photoshop, Illustrator, InDesign, Figma, Typography, Branding, Color Theory\n\nEDUCATION\nB.F.A. in Graphic Design, Otis College of Art and Design (2021)",
+      "targetJobDescription": "Senior Cloud DevOps Engineer\nRequirements:\n- 4+ years administering AWS cloud infrastructure via Terraform and Ansible.\n- Experience configuring Kubernetes clusters, Helm charts, and Envoy service mesh.\n- Expertise in Linux system administration, shell scripting, and network security.",
+      "groundTruth": {
+        "expectedSkills": ["Adobe Photoshop", "Illustrator", "InDesign", "Figma", "Typography", "Branding", "Color Theory"],
+        "targetJdRequiredSkills": ["AWS", "Terraform", "Ansible", "Kubernetes", "Helm", "Linux", "Network Security"],
+        "expectedSkillGaps": ["AWS", "Terraform", "Ansible", "Kubernetes", "Helm", "Linux", "Network Security"],
+        "expectedScoreRange": [0, 15],
+        "prohibitedHallucinations": ["AWS Solutions Architect", "Terraform infrastructure scripts", "Kubernetes deployment"]
+      }
+    },
+    {
+      "id": "CASE-10",
+      "name": "Junior Frontend Developer -> Fullstack Python/React Role",
+      "experienceLevel": "Entry (1.5 years)",
+      "roleType": "Technical - Frontend to Fullstack",
+      "matchTier": "Partial Match",
+      "resumeText": "Carlos Ramirez\nFrontend Web Developer\ncarlos.ramirez@example.com | Miami, FL\n\nSUMMARY\nJunior Frontend Developer with 1.5 years experience creating responsive UI components in React and CSS. Excited to grow into fullstack development.\n\nEXPERIENCE\nFrontend Developer | WebLaunch (2023 - Present)\n- Developed landing pages and interactive forms in React and TailwindCSS.\n- Connected UI components to third-party REST endpoints.\n\nSKILLS\nReact, JavaScript, HTML5, CSS3, TailwindCSS, Git\n\nEDUCATION\nAssociate Degree in Web Development, Miami Dade College (2023)",
+      "targetJobDescription": "Fullstack Software Engineer (Python & React)\nRequirements:\n- 2+ years experience building React frontend applications.\n- Strong proficiency in Python backend services using FastAPI or Django.\n- Experience with PostgreSQL relational database modeling and queries.\n- Familiarity with Docker containerization.",
+      "groundTruth": {
+        "expectedSkills": ["React", "JavaScript", "HTML5", "CSS3", "TailwindCSS", "Git"],
+        "targetJdRequiredSkills": ["React", "Python", "FastAPI/Django", "PostgreSQL", "Docker"],
+        "expectedSkillGaps": ["Python", "FastAPI/Django", "PostgreSQL", "Docker"],
+        "expectedScoreRange": [50, 68],
+        "prohibitedHallucinations": ["Python Django production experience", "PostgreSQL database architect", "Docker deployment"]
+      }
+    },
+    {
+      "id": "CASE-11",
+      "name": "Senior DevOps Engineer -> Site Reliability Engineer (SRE)",
+      "experienceLevel": "Senior (6 years)",
+      "roleType": "Technical - DevOps/SRE",
+      "matchTier": "High Match",
+      "resumeText": "Brian O'Connor\nSenior DevOps / SRE Engineer\nbrian.oconnor@example.com | Chicago, IL\n\nSUMMARY\nSite Reliability & DevOps Engineer with 6 years experience automating cloud operations, managing Kubernetes clusters, and configuring incident response systems.\n\nEXPERIENCE\nSenior DevOps Engineer | FinSecure Corp (2021 - Present)\n- Managed 12 production Kubernetes clusters on AWS with EKS, maintaining 99.98% uptime.\n- Created infrastructure-as-code modules using Terraform and Ansible.\n- Built incident alerting and SLO dashboards in Datadog and PagerDuty.\n\nDevOps Engineer | CloudGrid (2018 - 2021)\n- Automated CI/CD deployment pipelines using GitLab CI and Docker.\n- Scripted server maintenance automation in Python and Bash.\n\nSKILLS\nKubernetes, AWS, Terraform, Docker, Python, Bash, Datadog, CI/CD, Linux, PagerDuty\n\nEDUCATION\nB.S. in Computer Science, University of Wisconsin (2018)",
+      "targetJobDescription": "Site Reliability Engineer (SRE)\nRequirements:\n- 5+ years experience in SRE, DevOps, or systems engineering.\n- Hands-on mastery of Kubernetes container orchestration and AWS infrastructure.\n- Infrastructure as code with Terraform.\n- Experience establishing SLI/SLO metrics, monitoring (Datadog/Prometheus), and on-call operations.",
+      "groundTruth": {
+        "expectedSkills": ["Kubernetes", "AWS", "Terraform", "Docker", "Python", "Bash", "Datadog", "CI/CD", "Linux", "PagerDuty"],
+        "targetJdRequiredSkills": ["Kubernetes", "AWS", "Terraform", "SLI/SLO", "Monitoring", "Incident Management"],
+        "expectedSkillGaps": [],
+        "expectedScoreRange": [88, 98],
+        "prohibitedHallucinations": ["GCP Cloud Architect", "Java microservices tuning", "React frontend development"]
+      }
+    },
+    {
+      "id": "CASE-12",
+      "name": "Marketing Specialist -> Marketing Data Analyst",
+      "experienceLevel": "Mid-Level (3 years)",
+      "roleType": "Marketing vs Marketing Analytics",
+      "matchTier": "Partial Match",
+      "resumeText": "Natalie Brooks\nDigital Marketing Specialist\nnatalie.brooks@example.com | Atlanta, GA\n\nSUMMARY\nMarketing Specialist with 3 years managing paid social campaigns, email marketing, and Google Analytics. Eager to expand deeper into advanced statistical analytics.\n\nEXPERIENCE\nDigital Marketing Specialist | Growth Agency (2022 - Present)\n- Managed $40k/month paid search and social campaigns across Google Ads and Meta.\n- Tracked website conversion funnels in Google Analytics 4 (GA4).\n- Prepared monthly Excel performance decks using pivot tables and charts.\n\nSKILLS\nGoogle Analytics (GA4), Google Ads, SEO, Email Marketing, Excel (Pivot Tables), Copywriting\n\nEDUCATION\nB.A. in Marketing, University of Georgia (2021)",
+      "targetJobDescription": "Marketing Data Analyst\nRequirements:\n- 2+ years in marketing analytics.\n- Strong proficiency in SQL to query raw marketing data lakes.\n- Experience with Python or R for statistical modeling and cohort analysis.\n- Deep understanding of Google Analytics (GA4) and attribution modeling.\n- Experience creating business intelligence dashboards in Tableau or Looker.",
+      "groundTruth": {
+        "expectedSkills": ["Google Analytics", "Google Ads", "SEO", "Email Marketing", "Excel", "Copywriting"],
+        "targetJdRequiredSkills": ["SQL", "Python/R", "Statistical Modeling", "Google Analytics", "Tableau/Looker", "Attribution Modeling"],
+        "expectedSkillGaps": ["SQL", "Python/R", "Statistical Modeling", "Tableau/Looker", "Attribution Modeling"],
+        "expectedScoreRange": [35, 55],
+        "prohibitedHallucinations": ["SQL data lake queries", "Python statistical machine learning models", "Tableau dashboard design"]
+      }
+    }
+  ]
+}
+

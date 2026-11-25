@@ -1,89 +1,283 @@
 import { NextRequest, NextResponse } from "next/server";
-import Groq from "groq-sdk";
-// Removed static pdfParse require to fix Vercel static compilation
+import { parseResumeBuffer, ResumeParseError } from "../../../lib/parsing/resume-parser";
+import {
+  validateUploadFile,
+  validateExtractedText,
+  FailureCategory,
+} from "../../../lib/validation/resume-validator";
+import { globalMetrics } from "../../../lib/metrics/metrics-collector";
+import { executeAiCompletion, extractJsonFromAiResponse } from "../../../lib/ai/ai-client";
 
-// Using the same Groq client configuration that your app currently uses
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export interface ParsedResumeSchema {
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  role: string;
+  experience: string;
+  skills: string;
+  education: string;
+  projects: string;
+  achievements: string;
+}
+
+const DEFAULT_PARSED_SCHEMA: ParsedResumeSchema = {
+  name: "",
+  email: "",
+  phone: "",
+  location: "",
+  role: "",
+  experience: "",
+  skills: "",
+  education: "",
+  projects: "",
+  achievements: "",
+};
 
 export async function POST(req: NextRequest) {
+  const reqStart = performance.now();
+  let validationMs = 0;
+  let parsingMs = 0;
+  let aiRequestMs = 0;
+  let postProcessingMs = 0;
+  let detectedFormat: "pdf" | "docx" | "txt" | undefined;
+  let wordCount = 0;
+
   try {
+    // Stage 1: Upload Validation
+    const valStart = performance.now();
     const formData = await req.formData();
-    const file = formData.get("file") as File;
+    const file = formData.get("file") as File | null;
 
     if (!file) {
+      validationMs = performance.now() - valStart;
+      globalMetrics.recordInvalidUpload(
+        "unknown",
+        0,
+        "MISSING_FILE_OR_CONTENT",
+        "No file uploaded in form data"
+      );
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    let text = "";
-
-    // Extract text depending on file type
-    if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
-      const arrayBuffer = await file.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      
-      const pdfParse = require("pdf-parse");
-      const data = await pdfParse(buffer);
-      text = data.text;
-    } else if (file.type === "text/plain" || file.name.endsWith(".txt")) {
-      text = await file.text();
-    } else {
-      // Very basic fallback for DOCX or unknown: try to read it as text, 
-      // though typically DOCX needs a specific parser. For now, text/pdf is best.
-      try {
-        text = await file.text();
-      } catch (e) {
-        return NextResponse.json({ error: "Unsupported file type or unable to read text" }, { status: 400 });
-      }
-    }
-
-    if (!text || text.trim().length === 0) {
-      return NextResponse.json({ error: "Could not extract text from file" }, { status: 400 });
-    }
-
-    // Use AI to extract structured info
-    const prompt = `
-      Extract the following information from the provided resume text.
-      Return ONLY a raw JSON object with these exact keys, and no markdown formatting or backticks around it:
-      {
-        "name": "",
-        "email": "",
-        "phone": "",
-        "location": "",
-        "role": "", // Infer their primary job title
-        "experience": "", // Summarize years of experience (e.g., "3 years")
-        "skills": "", // Comma-separated list of top skills
-        "education": "", // Summarize highest degree and university
-        "projects": "", // Brief bullet points of projects
-        "achievements": "" // Brief bullet points of achievements
-      }
-      
-      If a field is not found in the resume, leave it as an empty string. Do not invent information.
-
-      Resume Text:
-      ${text.substring(0, 4000)} /* Truncating to avoid token limits */
-    `;
-
-    const chatCompletion = await groq.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
-      model: "llama3-8b-8192", // Using a fast, standard model
-      temperature: 0.1, // Low temp for more deterministic extraction
+    const uploadValidation = validateUploadFile({
+      name: file.name,
+      size: file.size,
+      type: file.type,
     });
 
-    let resultRaw = chatCompletion.choices[0]?.message?.content || "{}";
-    
-    // Clean up potential markdown wrapper from AI
-    resultRaw = resultRaw.replace(/```json/gi, "").replace(/```/g, "").trim();
+    validationMs = performance.now() - valStart;
 
-    try {
-      const parsedData = JSON.parse(resultRaw);
-      return NextResponse.json(parsedData);
-    } catch (parseError) {
-      console.error("AI returned malformed JSON:", resultRaw);
-      return NextResponse.json({ error: "Failed to parse AI output into JSON" }, { status: 500 });
+    if (!uploadValidation.isUploadValid) {
+      // Reject invalid upload - excluded from valid processing attempts denominator
+      globalMetrics.recordInvalidUpload(
+        file.name,
+        file.size,
+        uploadValidation.invalidCategory || "UNSUPPORTED_MIME_OR_EXTENSION",
+        uploadValidation.rejectionReason || "Invalid file upload"
+      );
+      return NextResponse.json(
+        { error: uploadValidation.rejectionReason },
+        { status: 400 }
+      );
     }
 
+    detectedFormat = uploadValidation.format!;
+
+    // Stage 2: File Reading & Parsing (counted in valid processing attempts)
+    const parseStart = performance.now();
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    let parsedResult;
+    try {
+      parsedResult = await parseResumeBuffer(buffer, detectedFormat);
+      parsingMs = performance.now() - parseStart;
+    } catch (parseErr: any) {
+      parsingMs = performance.now() - parseStart;
+      const failureCategory: FailureCategory =
+        parseErr instanceof ResumeParseError ? parseErr.category : "PARSING_ERROR";
+
+      globalMetrics.recordProcessingAttempt({
+        success: false,
+        format: detectedFormat,
+        failureCategory,
+        errorMessage: parseErr.message,
+        latencies: {
+          validationMs: Math.round(validationMs * 100) / 100,
+          parsingMs: Math.round(parsingMs * 100) / 100,
+          aiRequestMs: 0,
+          postProcessingMs: 0,
+          totalLatencyMs: Math.round((performance.now() - reqStart) * 100) / 100,
+        },
+      });
+
+      return NextResponse.json(
+        { error: parseErr.message, category: failureCategory },
+        { status: 400 }
+      );
+    }
+
+    const textValidation = validateExtractedText(parsedResult.text);
+    wordCount = textValidation.wordCount;
+
+    if (!textValidation.isValid) {
+      const failureCat: FailureCategory =
+        textValidation.failureCategory || "EMPTY_EXTRACTED_TEXT";
+
+      globalMetrics.recordProcessingAttempt({
+        success: false,
+        format: detectedFormat,
+        wordCount,
+        failureCategory: failureCat,
+        errorMessage: textValidation.reason,
+        latencies: {
+          validationMs: Math.round(validationMs * 100) / 100,
+          parsingMs: Math.round(parsingMs * 100) / 100,
+          aiRequestMs: 0,
+          postProcessingMs: 0,
+          totalLatencyMs: Math.round((performance.now() - reqStart) * 100) / 100,
+        },
+      });
+
+      return NextResponse.json(
+        { error: textValidation.reason, category: failureCat },
+        { status: 400 }
+      );
+    }
+
+    // Stage 3: AI Information Extraction
+    const prompt = `Extract the following information from the provided resume text.
+Return ONLY a raw JSON object with these exact keys, and no markdown formatting or backticks around it:
+{
+  "name": "",
+  "email": "",
+  "phone": "",
+  "location": "",
+  "role": "",
+  "experience": "",
+  "skills": "",
+  "education": "",
+  "projects": "",
+  "achievements": ""
+}
+
+If a field is not found in the resume, leave it as an empty string. Do not invent information.
+
+Resume Text:
+${parsedResult.text.substring(0, 4000)}`;
+
+    const aiStart = performance.now();
+    let aiResponse;
+    try {
+      aiResponse = await executeAiCompletion({
+        messages: [{ role: "user", content: prompt }],
+        model: "auto",
+        temperature: 0.1,
+      });
+      aiRequestMs = performance.now() - aiStart;
+    } catch (aiErr: any) {
+      aiRequestMs = performance.now() - aiStart;
+      const failureCat: FailureCategory =
+        aiErr.category || "AI_PROVIDER_FAILURE";
+
+      globalMetrics.recordProcessingAttempt({
+        success: false,
+        format: detectedFormat,
+        wordCount,
+        failureCategory: failureCat,
+        errorMessage: aiErr.message,
+        latencies: {
+          validationMs: Math.round(validationMs * 100) / 100,
+          parsingMs: Math.round(parsingMs * 100) / 100,
+          aiRequestMs: Math.round(aiRequestMs * 100) / 100,
+          postProcessingMs: 0,
+          totalLatencyMs: Math.round((performance.now() - reqStart) * 100) / 100,
+        },
+      });
+
+      return NextResponse.json(
+        { error: "AI Extraction failed: " + aiErr.message, category: failureCat },
+        { status: 500 }
+      );
+    }
+
+    // Stage 4: Post-Processing & Serialization
+    const postStart = performance.now();
+    let parsedData: ParsedResumeSchema;
+    try {
+      parsedData = extractJsonFromAiResponse<ParsedResumeSchema>(
+        aiResponse.content,
+        DEFAULT_PARSED_SCHEMA
+      );
+    } catch (jsonErr: any) {
+      postProcessingMs = performance.now() - postStart;
+      globalMetrics.recordProcessingAttempt({
+        success: false,
+        format: detectedFormat,
+        wordCount,
+        failureCategory: "AI_MALFORMED_OUTPUT",
+        errorMessage: jsonErr.message,
+        latencies: {
+          validationMs: Math.round(validationMs * 100) / 100,
+          parsingMs: Math.round(parsingMs * 100) / 100,
+          aiRequestMs: Math.round(aiRequestMs * 100) / 100,
+          postProcessingMs: Math.round(postProcessingMs * 100) / 100,
+          totalLatencyMs: Math.round((performance.now() - reqStart) * 100) / 100,
+        },
+      });
+
+      return NextResponse.json(
+        { error: "Failed to parse AI output into JSON", category: "AI_MALFORMED_OUTPUT" },
+        { status: 500 }
+      );
+    }
+
+    postProcessingMs = performance.now() - postStart;
+    const totalLatencyMs = performance.now() - reqStart;
+
+    // Record Successful Processing Attempt
+    globalMetrics.recordProcessingAttempt({
+      success: true,
+      format: detectedFormat,
+      wordCount,
+      latencies: {
+        validationMs: Math.round(validationMs * 100) / 100,
+        parsingMs: Math.round(parsingMs * 100) / 100,
+        aiRequestMs: Math.round(aiRequestMs * 100) / 100,
+        postProcessingMs: Math.round(postProcessingMs * 100) / 100,
+        totalLatencyMs: Math.round(totalLatencyMs * 100) / 100,
+      },
+    });
+
+    const response = NextResponse.json(parsedData);
+    response.headers.set("X-Latency-Validation-Ms", validationMs.toFixed(1));
+    response.headers.set("X-Latency-Parsing-Ms", parsingMs.toFixed(1));
+    response.headers.set("X-Latency-Ai-Ms", aiRequestMs.toFixed(1));
+    response.headers.set("X-Latency-Total-Ms", totalLatencyMs.toFixed(1));
+    return response;
   } catch (error: any) {
-    console.error("Parse Resume API Error:", error);
-    return NextResponse.json({ error: error.message || "Something went wrong" }, { status: 500 });
+    const totalLatencyMs = performance.now() - reqStart;
+    globalMetrics.recordProcessingAttempt({
+      success: false,
+      format: detectedFormat,
+      failureCategory: "INTERNAL_ERROR",
+      errorMessage: error.message || "Unknown error",
+      latencies: {
+        validationMs: Math.round(validationMs * 100) / 100,
+        parsingMs: Math.round(parsingMs * 100) / 100,
+        aiRequestMs: Math.round(aiRequestMs * 100) / 100,
+        postProcessingMs: Math.round(postProcessingMs * 100) / 100,
+        totalLatencyMs: Math.round(totalLatencyMs * 100) / 100,
+      },
+    });
+
+    return NextResponse.json(
+      { error: error.message || "Something went wrong", category: "INTERNAL_ERROR" },
+      { status: 500 }
+    );
   }
 }
